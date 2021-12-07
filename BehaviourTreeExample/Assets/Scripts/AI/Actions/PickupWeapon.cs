@@ -31,7 +31,6 @@ public class PickupWeapon : Action
 
         if (closest == null)
         {
-            Debug.Log("Stick Component not found in scene");
             return false;
         }
 

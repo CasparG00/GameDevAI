@@ -22,7 +22,13 @@ public class Attack : Action
 
     public override bool PerformAction(NavMeshAgent _agent)
     {
-        var ray = new Ray(transform.position, transform.forward);
+        var distance = Vector3.Distance(_agent.transform.position, target.transform.position);
+        if (distance > 5)
+        {
+            return false;
+        }
+        
+        var ray = new Ray(_agent.transform.position, _agent.transform.forward);
         if (Physics.SphereCast(ray, 2, out var hit, 1, attackLayer))
         {
             var damageable = hit.transform.GetComponent<IDamageable>();

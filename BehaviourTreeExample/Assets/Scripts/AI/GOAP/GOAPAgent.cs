@@ -12,6 +12,7 @@ public sealed class GOAPAgent : MonoBehaviour
     private AgentState state = AgentState.idle;
 
     private NavMeshAgent agent;
+    private IGoap GOAPuser;
 
     private void Start()
     {
@@ -26,6 +27,7 @@ public sealed class GOAPAgent : MonoBehaviour
         }
 
         agent = GetComponent<NavMeshAgent>();
+        GOAPuser = GetComponent<IGoap>();
     }
     
     private void Update()
@@ -33,14 +35,14 @@ public sealed class GOAPAgent : MonoBehaviour
         Action action = null;
         if (currentActions.Count > 0)
         {
-            action = currentActions.Peek();
+            action = currentActions.Peek(); 
         }
 
         switch (state)
         {
             case AgentState.idle:
-                var worldData = GetComponent<IGoap>().GetWorldData();
-                var goal = GetComponent<IGoap>().CreateGoals();
+                var worldData = GOAPuser.GetWorldData();
+                var goal = GOAPuser.CreateGoals();
 
                 var plan = planner.Plan(agent, availableActions, goal, worldData);
                 if (plan != null)
@@ -68,16 +70,18 @@ public sealed class GOAPAgent : MonoBehaviour
                     return;
                 }
 
-                if (GetComponent<IGoap>().MoveAgent(action))
+                var reachedDestination = GOAPuser.MoveAgent(action);
+                state = reachedDestination switch
                 {
-                    state = AgentState.performAction;
-                }
-                
+                    MoveState.inRange => AgentState.performAction,
+                    MoveState.unreachable => AgentState.idle,
+                    _ => state
+                };
+
                 break;
             case AgentState.performAction:
-                if (!(currentActions.Count > 0))
+                if (currentActions.Count == 0)
                 {
-                    Debug.Log("Completed All Actions");
                     state = AgentState.idle;
                     return;
                 }
@@ -118,8 +122,8 @@ public sealed class GOAPAgent : MonoBehaviour
                 break;
         }
     }
-    
-    public enum AgentState
+
+    private enum AgentState
     {
         idle,
         moveTo,

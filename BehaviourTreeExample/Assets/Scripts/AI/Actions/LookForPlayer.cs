@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class LookForPlayer : Action
 {
+    private Player player;
     private bool playerFound;
     
     public LookForPlayer()
@@ -13,14 +14,14 @@ public class LookForPlayer : Action
     
     public override bool IsAchievable(NavMeshAgent _agent)
     {
-        target = Player.instance.gameObject;
-        return true;
+        player = Player.instance;
+        return player != null;
     }
 
     public override bool PerformAction(NavMeshAgent _agent)
     {
         var tf = _agent.transform;
-        var direction = target.transform.position - tf.position;
+        var direction = player.transform.position - tf.position;
         var angle = Vector3.Angle(tf.forward, direction);
         if (angle < 30)
         {

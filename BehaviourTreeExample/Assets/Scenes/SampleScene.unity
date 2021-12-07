@@ -533,6 +533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
   viewTransform: {fileID: 925384070}
+  maxChaseRange: 5
 --- !u!114 &539429228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1766,10 +1767,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daecdc9191b1aa94482594ea20f7e663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotXSpeed: 60
-  rotYSpeed: 60
+  rotXSpeed: 2
+  rotYSpeed: 2
   followTarget: {fileID: 1267729045}
-  smoothFollowFactor: 3
 --- !u!4 &1696898269
 Transform:
   m_ObjectHideFlags: 0

@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 
-public class Player : MonoBehaviour, IDamageable
+public class Player : Singleton<Player>, IDamageable
 {
     public Transform Camera;
     [SerializeField] private float rotationSpeed = 180f;
@@ -62,7 +60,7 @@ public class Player : MonoBehaviour, IDamageable
         
     }
 
-    public void TakeDamage(GameObject attacker, int damage)
+    public void TakeDamage(GameObject attacker, float damage)
     {
         animator.enabled = false;
         var cols = GetComponentsInChildren<Collider>();

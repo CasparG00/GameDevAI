@@ -1,41 +1,111 @@
-﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Guard : MonoBehaviour
+public class Guard : MonoBehaviour, IGoap
 {
-    private BTBaseNode tree;
+    public Inventory inventory;
     private NavMeshAgent agent;
-    private Animator animator;
 
-    private void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponentInChildren<Animator>();
-    }
+    private GuardState state = GuardState.Patrolling;
+
+    private Transform player;
+    [SerializeField]
+    private Transform viewTransform;
+    
+    private readonly List<GameObject> wayPoints = new List<GameObject>();
+    private int visited;
 
     private void Start()
     {
-        //Create your Behaviour Tree here!
+        if (inventory == null)
+        {
+            inventory = gameObject.AddComponent<Inventory>();
+        }
+
+        agent = GetComponent<NavMeshAgent>();
+        player = Player.instance.transform;
+        
+        var components = FindObjectsOfType<WayPointComponent>();
+        if (components != null)
+        {
+            components = components.OrderBy(_component => _component.order).ToArray();
+            foreach (var component in components)
+            {
+                wayPoints.Add(component.gameObject);
+            }
+        }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        tree?.Run();
+        switch (state)
+        {
+            case GuardState.Patrolling:
+                break;
+            case GuardState.Chasing:
+                var distance = Vector3.Distance(transform.position, player.position);
+                if (distance < 5f)
+                {
+                    state = GuardState.Patrolling;
+                }
+                break;
+        }
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.yellow;
-    //    Handles.color = Color.yellow;
-    //    Vector3 endPointLeft = viewTransform.position + (Quaternion.Euler(0, -ViewAngleInDegrees.Value, 0) * viewTransform.transform.forward).normalized * SightRange.Value;
-    //    Vector3 endPointRight = viewTransform.position + (Quaternion.Euler(0, ViewAngleInDegrees.Value, 0) * viewTransform.transform.forward).normalized * SightRange.Value;
+    public Dictionary<string, object> GetWorldData()
+    {
+        var worldData = new Dictionary<string, object>();
+        
+        worldData.Add("hasWeapon", inventory.GetAmount("weapon") > 0);
 
-    //    Handles.DrawWireArc(viewTransform.position, Vector3.up, Quaternion.Euler(0, -ViewAngleInDegrees.Value, 0) * viewTransform.transform.forward, ViewAngleInDegrees.Value * 2, SightRange.Value);
-    //    Gizmos.DrawLine(viewTransform.position, endPointLeft);
-    //    Gizmos.DrawLine(viewTransform.position, endPointRight);
+        return worldData;
+    }
 
-    //}
+    private void Patrol()
+    {
+        if (visited < wayPoints.Count)
+        {
+            agent.SetDestination(wayPoints[visited].transform.position);
+            var distance = Vector3.Distance(transform.position, agent.destination);
+            if (distance < 1)
+            {
+                visited++;
+            }
+        }
+        else
+        {
+            visited = 0;
+        }
+    }
+
+    public Dictionary<string, object> CreateGoals()
+    {
+        var goal = new Dictionary<string, object>();
+        
+        goal.Add("attackedPlayer", true);
+
+        return goal;
+    }
+
+    public bool MoveAgent(Action _action)
+    {
+        var position = _action.target.transform.position;
+        agent.SetDestination(position);
+
+        var distance = Vector3.Distance(agent.transform.position, position);
+        if (distance < 1)
+        {
+            _action.SetInRange(true);
+            return true;
+        }
+        return false;
+    }
+
+    private enum GuardState
+    {
+        Patrolling,
+        Chasing,
+    }
 }

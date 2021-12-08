@@ -39,7 +39,7 @@ public class Ally : MonoBehaviour, IGoap
     {
         var goal = new Dictionary<string, object>();
 
-        goal.Add(Player.instance.gettingAttacked ? "protectPlayer" : "followPlayer", true);
+        goal.Add(Player.instance.gettingAttacked ? "findCover" : "followPlayer", true);
 
         return goal;
     }

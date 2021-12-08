@@ -1,10 +1,11 @@
+using UnityEngine;
 using UnityEngine.AI;
 
 public class FollowPlayer : Action
 {
     private bool followedPlayer;
     private Player player;
-    
+
     public FollowPlayer()
     {
         AddPrecondition("followPlayer", false);
@@ -14,8 +15,8 @@ public class FollowPlayer : Action
     public override bool IsAchievable(NavMeshAgent _agent)
     {
         player = Player.instance;
-
         target = player.gameObject;
+        
         return player != null;
     }
 

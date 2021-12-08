@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class Action : MonoBehaviour
 {
+    public string actionContext = "Abstract Action";
     public float cost = 1f;
-    public GameObject target;
+    [HideInInspector] public GameObject target;
     protected bool inRange;
 
     public Dictionary<string, object> preconditions { get; }

@@ -113,7 +113,7 @@ NavMeshSettings:
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
-    minRegionArea: 2
+    minRegionArea: 1
     manualCellSize: 0
     cellSize: 0.16666667
     manualTileSize: 0
@@ -140,7 +140,7 @@ GameObject:
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 3
   m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!65 &165667810
@@ -448,6 +448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49a5a6325b6abd049bfd834e3ecf06dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionContext: Attacking Player
   cost: 1
   target: {fileID: 0}
   damage: 10
@@ -464,7 +465,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 16
   avoidancePriority: 50
   m_AngularSpeed: 180
@@ -546,6 +547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba7d908f56e9ef34aa415ec8dd55c68c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionContext: Patrolling
   cost: 1
   target: {fileID: 0}
 --- !u!114 &539429229
@@ -560,6 +562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de58d6b9732fc46478db76dbc0e8ed4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionContext: Picking Up Weapon
   cost: 1
   target: {fileID: 0}
 --- !u!1001 &593971748
@@ -592,7 +595,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 78e920477e9e73d46b3bf369e8c3b4a1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 78e920477e9e73d46b3bf369e8c3b4a1,
         type: 3}
@@ -2030,6 +2033,10 @@ GameObject:
   - component: {fileID: 1840160679}
   - component: {fileID: 1840160681}
   - component: {fileID: 1840160680}
+  - component: {fileID: 1840160684}
+  - component: {fileID: 1840160683}
+  - component: {fileID: 1840160682}
+  - component: {fileID: 1840160685}
   m_Layer: 0
   m_Name: AI_Ninja
   m_TagString: Untagged
@@ -2089,6 +2096,60 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1840160682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840160678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973ea599414b2d24293f94992c6eef8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionContext: Following Player
+  cost: 1
+  target: {fileID: 0}
+--- !u!114 &1840160683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840160678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2469b20bc495aeb4484c98497a42485f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1840160684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840160678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e470c5c48b5691d4ba4c012ddba5e374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  viewTransform: {fileID: 0}
+  followDistance: 5
+--- !u!114 &1840160685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840160678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b48a86ab9b400e41a788759235c6bdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1868206819
 GameObject:
   m_ObjectHideFlags: 0

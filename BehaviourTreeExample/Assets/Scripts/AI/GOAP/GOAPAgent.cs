@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,7 +10,7 @@ public sealed class GOAPAgent : MonoBehaviour
     private HashSet<Action> availableActions;
     private Queue<Action> currentActions;
     
-    private AgentState state = AgentState.idle;
+    private AgentState state = AgentState.Idle;
 
     private NavMeshAgent agent;
     private IGoap GOAPuser;
@@ -40,7 +41,7 @@ public sealed class GOAPAgent : MonoBehaviour
 
         switch (state)
         {
-            case AgentState.idle:
+            case AgentState.Idle:
                 var worldData = GOAPuser.GetWorldData();
                 var goal = GOAPuser.CreateGoals();
 
@@ -51,38 +52,39 @@ public sealed class GOAPAgent : MonoBehaviour
                     
                     if (currentActions.Peek().RequiresInRange())
                     {
-                        state = AgentState.moveTo;
+                        state = AgentState.MoveTo;
                     }
                     else
                     {
-                        state = AgentState.performAction;
+                        state = AgentState.PerformAction;
                     }
                 }
                 else
                 {
-                    Debug.Log("<color=orange>Failed to make plan</color>");
+                    Debug.Log(GOAPuser + "<color=red>Failed to make plan</color>");
                 }
                 break;
-            case AgentState.moveTo:
+            case AgentState.MoveTo:
                 if (action.RequiresInRange() && action.target ==  null)
                 {
-                    state = AgentState.idle;
+                    Debug.Log("<color=orange>Action requires agent to be in range but target has not been set for: </color>" + action);
+                    state = AgentState.Idle;
                     return;
                 }
 
                 var reachedDestination = GOAPuser.MoveAgent(action);
                 state = reachedDestination switch
                 {
-                    MoveState.inRange => AgentState.performAction,
-                    MoveState.unreachable => AgentState.idle,
+                    MoveState.inRange => AgentState.PerformAction,
+                    MoveState.unreachable => AgentState.Idle,
                     _ => state
                 };
 
                 break;
-            case AgentState.performAction:
+            case AgentState.PerformAction:
                 if (currentActions.Count == 0)
                 {
-                    state = AgentState.idle;
+                    state = AgentState.Idle;
                     return;
                 }
                 
@@ -103,30 +105,41 @@ public sealed class GOAPAgent : MonoBehaviour
 
                         if (!success)
                         {
-                            state = AgentState.idle;
+                            state = AgentState.Idle;
                         }
                     }
                     else
                     {
-                        state = AgentState.moveTo;
+                        state = AgentState.MoveTo;
                     }
                 }
                 else
                 {
-                    state = AgentState.idle;
+                    state = AgentState.Idle;
                 }
                 
                 break;
             default:
-                state = AgentState.idle;
+                state = AgentState.Idle;
                 break;
         }
     }
 
     private enum AgentState
     {
-        idle,
-        moveTo,
-        performAction,
+        Idle,
+        MoveTo,
+        PerformAction,
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+
+        if (agent != null)
+        {
+            var text = currentActions.Count == 0 ? state.ToString() : currentActions.Peek().actionContext;
+            Handles.Label(agent.transform.position + Vector3.up * (agent.height + 0.2f), text);
+        }
     }
 }

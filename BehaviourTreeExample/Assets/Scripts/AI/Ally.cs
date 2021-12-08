@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Guard : MonoBehaviour, IGoap
+public class Ally : MonoBehaviour, IGoap
 {
     public Inventory inventory;
     private NavMeshAgent agent;
 
     private Transform player;
     [SerializeField] private Transform viewTransform;
-    [SerializeField] private float maxChaseRange = 5;
-
+    [SerializeField] private float followDistance = 5f;
+    
     private void Start()
     {
         if (GetComponent<Inventory>() == null)
@@ -19,6 +19,8 @@ public class Guard : MonoBehaviour, IGoap
         }
 
         agent = GetComponent<NavMeshAgent>();
+        agent.stoppingDistance = followDistance;
+        
         player = Player.instance.transform;
     }
 
@@ -26,8 +28,9 @@ public class Guard : MonoBehaviour, IGoap
     {
         var worldData = new Dictionary<string, object>();
         
-        worldData.Add("hasWeapon", inventory.GetAmount("weapon") > 0);
-        worldData.Add("playerFound", false);
+        worldData.Add("protectPlayer", false);
+        worldData.Add("followPlayer", false);
+        worldData.Add("findCover", false);
 
         return worldData;
     }
@@ -35,8 +38,8 @@ public class Guard : MonoBehaviour, IGoap
     public Dictionary<string, object> CreateGoals()
     {
         var goal = new Dictionary<string, object>();
-        
-        goal.Add("attackedPlayer", true);
+
+        goal.Add(Player.instance.gettingAttacked ? "protectPlayer" : "followPlayer", true);
 
         return goal;
     }
@@ -47,17 +50,9 @@ public class Guard : MonoBehaviour, IGoap
         agent.SetDestination(position);
 
         var distance = Vector3.Distance(agent.transform.position, position);
-        if (distance < 1 + agent.stoppingDistance)
-        {
-            _action.SetInRange(true);
-            return MoveState.inRange;
-        }
-
-        if (distance > maxChaseRange && _action.target == player.gameObject)
-        {
-            return MoveState.unreachable;
-        }
-
-        return MoveState.moving;
+        if (!(distance < agent.stoppingDistance)) return MoveState.moving;
+        
+        _action.SetInRange(true);
+        return MoveState.inRange;
     }
 }

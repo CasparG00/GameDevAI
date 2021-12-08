@@ -14,7 +14,9 @@ public class Player : Singleton<Player>, IDamageable
     private float hor = 0;
     private Vector3 moveDirection;
     private Collider mainCollider;
-    // Start is called before the first frame update
+
+    public bool gettingAttacked { get; private set; }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -36,8 +38,7 @@ public class Player : Singleton<Player>, IDamageable
         mainCollider.enabled = true;
         rb.isKinematic = false;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         vert = Input.GetAxis("Vertical");
@@ -53,11 +54,6 @@ public class Player : Singleton<Player>, IDamageable
 
         bool isMoving = hor != 0 || vert != 0;
         ChangeAnimation(isMoving ? "Walk Crouch" : "Crouch Idle", isMoving ? 0.05f : 0.15f);
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
 
     public void TakeDamage(GameObject attacker, float damage)
@@ -102,5 +98,15 @@ public class Player : Singleton<Player>, IDamageable
         {
             animator.CrossFade(animationName, fadeTime);
         }
+    }
+
+    public void GetAttacked()
+    {
+        gettingAttacked = true;
+    }
+    
+    public void Escape()
+    {
+        gettingAttacked = false;
     }
 }

@@ -27,9 +27,10 @@ public class Attack : Action
         {
             return false;
         }
-        
-        var ray = new Ray(_agent.transform.position, _agent.transform.forward);
-        if (Physics.SphereCast(ray, 2, out var hit, 1, attackLayer))
+
+        var agentTransform = _agent.transform;
+        var hits = Physics.OverlapSphere(agentTransform.position, 2, attackLayer);
+        foreach (var hit in hits)
         {
             var damageable = hit.transform.GetComponent<IDamageable>();
             damageable?.TakeDamage(gameObject, damage);

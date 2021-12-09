@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,9 +8,10 @@ public class Guard : MonoBehaviour, IGoap
     public Inventory inventory;
     private NavMeshAgent agent;
 
-    private Transform player;
+    private Player player;
     [SerializeField] private Transform viewTransform;
     [SerializeField] private float maxChaseRange = 5;
+    [SerializeField] private float stunTime = 2;
 
     private void Start()
     {
@@ -19,7 +21,7 @@ public class Guard : MonoBehaviour, IGoap
         }
 
         agent = GetComponent<NavMeshAgent>();
-        player = Player.instance.transform;
+        player = Player.instance;
     }
 
     public Dictionary<string, object> GetWorldData()
@@ -59,5 +61,25 @@ public class Guard : MonoBehaviour, IGoap
         }
 
         return MoveState.moving;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("Smoke Bomb"))
+        {
+            player.Escape();
+            StartCoroutine(Stun());
+        }
+    }
+
+    private IEnumerator Stun()
+    {
+        var originalDestination = agent.destination;
+
+        agent.SetDestination(agent.transform.position);
+
+        yield return new WaitForSeconds(stunTime);
+
+        agent.SetDestination(originalDestination);
     }
 }

@@ -3,9 +3,10 @@ using UnityEngine.AI;
 
 public class FollowPlayer : Action
 {
+    [SerializeField] private float playerFollowDistance = 5;
     private bool followedPlayer;
-    private Player player;
-
+    private PlayerFollowTarget playerTarget;
+    
     public FollowPlayer()
     {
         AddPrecondition("followPlayer", false);
@@ -14,10 +15,10 @@ public class FollowPlayer : Action
     
     public override bool IsAchievable(NavMeshAgent _agent)
     {
-        player = Player.instance;
-        target = player.gameObject;
+        playerTarget = PlayerFollowTarget.instance;
+        target = playerTarget.gameObject;
         
-        return player != null;
+        return playerTarget != null;
     }
 
     public override bool PerformAction(NavMeshAgent _agent)

@@ -19,8 +19,7 @@ public class Ally : MonoBehaviour, IGoap
         }
 
         agent = GetComponent<NavMeshAgent>();
-        agent.stoppingDistance = followDistance;
-        
+
         player = Player.instance.transform;
     }
 
@@ -39,7 +38,7 @@ public class Ally : MonoBehaviour, IGoap
     {
         var goal = new Dictionary<string, object>();
 
-        goal.Add(Player.instance.gettingAttacked ? "findCover" : "followPlayer", true);
+        goal.Add(Player.instance.gettingAttacked ? "protectPlayer" : "followPlayer", true);
 
         return goal;
     }
@@ -50,7 +49,7 @@ public class Ally : MonoBehaviour, IGoap
         agent.SetDestination(position);
 
         var distance = Vector3.Distance(agent.transform.position, position);
-        if (!(distance < agent.stoppingDistance)) return MoveState.moving;
+        if (!(distance < 1 + agent.stoppingDistance)) return MoveState.moving;
         
         _action.SetInRange(true);
         return MoveState.inRange;

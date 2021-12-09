@@ -26,7 +26,6 @@ public class Player : Singleton<Player>, IDamageable
         foreach (Rigidbody rib in rigidBodies)
         {
             rib.isKinematic = true;
-            rib.useGravity = false;
         }
 
         var cols = GetComponentsInChildren<Collider>();

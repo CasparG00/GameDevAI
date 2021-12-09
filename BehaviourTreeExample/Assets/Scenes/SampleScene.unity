@@ -892,6 +892,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &842373199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 842373201}
+  - component: {fileID: 842373200}
+  m_Layer: 0
+  m_Name: Player Follow Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &842373200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842373199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511b1100fd6a13647b16af750e4e1363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 5
+--- !u!4 &842373201
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842373199}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &925384069
 GameObject:
   m_ObjectHideFlags: 0
@@ -2037,6 +2081,7 @@ GameObject:
   - component: {fileID: 1840160683}
   - component: {fileID: 1840160682}
   - component: {fileID: 1840160685}
+  - component: {fileID: 1840160686}
   m_Layer: 0
   m_Name: AI_Ninja
   m_TagString: Untagged
@@ -2111,6 +2156,7 @@ MonoBehaviour:
   actionContext: Following Player
   cost: 1
   target: {fileID: 0}
+  playerFollowDistance: 5
 --- !u!114 &1840160683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2154,7 +2200,24 @@ MonoBehaviour:
   cost: 1
   target: {fileID: 0}
   coverSamplePointCount: 6
-  coverSampleRadius: 20
+--- !u!114 &1840160686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840160678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6dc58a632160dc47a2165dbb3c45edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionContext: Throwing Smoke Bomb
+  cost: 1
+  target: {fileID: 0}
+  smokeBomb: {fileID: 1440965411006433327, guid: 8915c50a6c5ec104db9a603e756b28fa,
+    type: 3}
+  throwSpeed: 1
 --- !u!1 &1868206819
 GameObject:
   m_ObjectHideFlags: 0
@@ -2246,7 +2309,7 @@ Transform:
   m_GameObject: {fileID: 1868206819}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 30, y: 1, z: 30}
+  m_LocalScale: {x: 3, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2

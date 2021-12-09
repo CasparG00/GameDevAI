@@ -3,8 +3,6 @@ using UnityEngine.AI;
 
 public class FollowPlayer : Action
 {
-    [SerializeField] private float playerFollowDistance = 5;
-    private bool followedPlayer;
     private PlayerFollowTarget playerTarget;
     
     public FollowPlayer()
@@ -13,7 +11,7 @@ public class FollowPlayer : Action
         AddEffect("followPlayer", true);
     }
     
-    public override bool IsAchievable(NavMeshAgent _agent)
+    public override bool IsAchievable(GameObject _agent)
     {
         playerTarget = PlayerFollowTarget.instance;
         target = playerTarget.gameObject;
@@ -21,15 +19,10 @@ public class FollowPlayer : Action
         return playerTarget != null;
     }
 
-    public override bool PerformAction(NavMeshAgent _agent)
+    public override bool PerformAction(GameObject _agent)
     {
-        followedPlayer = true;
+        isCompleted = true;
         return true;
-    }
-
-    public override bool IsCompleted()
-    {
-        return followedPlayer;
     }
 
     public override bool RequiresInRange()
@@ -39,6 +32,6 @@ public class FollowPlayer : Action
 
     public override void Reset()
     {
-        followedPlayer = false;
+        isCompleted = false;
     }
 }

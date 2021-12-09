@@ -13,7 +13,7 @@ public class GOAPPlanner
         {
             action.DoReset();
             
-            if (action.IsAchievable(_agent))
+            if (action.IsAchievable(_agent.gameObject))
             {
                 usableActions.Add(action);
             }

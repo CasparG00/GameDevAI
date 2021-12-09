@@ -10,7 +10,6 @@ public class FindCover : Action
     [SerializeField] private int coverSamplePointCount = 6;
 
     private Transform enemy;
-    private bool coverFound;
 
     private NavMeshAgent agent;
     private Vector3 destination;
@@ -23,39 +22,34 @@ public class FindCover : Action
         AddEffect("findCover", true);
     }
 
-    public override bool IsAchievable(NavMeshAgent _agent)
+    public override bool IsAchievable(GameObject _agent)
     {
-        agent = _agent;
+        agent = _agent.GetComponent<NavMeshAgent>();
         enemy = FindObjectOfType<Guard>().transform;
 
         if (enemy == null) return false;
         return true;
     }
 
-    public override bool PerformAction(NavMeshAgent _agent)
+    public override bool PerformAction(GameObject _agent)
     {
         if (!isRunning)
         {
-            StartCoroutine(TakeCover(_agent));
+            StartCoroutine(TakeCover(agent));
         }
 
-        _agent.SetDestination(destination);
+        agent.SetDestination(destination);
         
-        if (_agent.isActiveAndEnabled)
+        if (agent.isActiveAndEnabled)
         {
-            if (Vector3.Distance(_agent.destination, _agent.transform.position) < 1)
+            if (Vector3.Distance(agent.destination, _agent.transform.position) < 1)
             {
                 Debug.Log("found Cover");
-                coverFound = true;
+                isCompleted = true;
+                StopCoroutine(TakeCover(agent));
             }
         }
         return true;
-    }
-
-    public override bool IsCompleted()
-    {
-        StopCoroutine(TakeCover(agent));
-        return coverFound;
     }
 
     public override bool RequiresInRange()
@@ -65,7 +59,7 @@ public class FindCover : Action
 
     public override void Reset()
     {
-        coverFound = false;
+        isCompleted = false;
         isRunning = false;
     }
 

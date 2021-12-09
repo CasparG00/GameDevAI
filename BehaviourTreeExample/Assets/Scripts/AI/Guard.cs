@@ -13,6 +13,8 @@ public class Guard : MonoBehaviour, IGoap
     [SerializeField] private float maxChaseRange = 5;
     [SerializeField] private float stunTime = 2;
 
+    private bool isRunning;
+
     private void Start()
     {
         if (GetComponent<Inventory>() == null)
@@ -57,6 +59,7 @@ public class Guard : MonoBehaviour, IGoap
 
         if (distance > maxChaseRange && _action.target == player.gameObject)
         {
+            player.Escape();
             return MoveState.unreachable;
         }
 
@@ -68,18 +71,25 @@ public class Guard : MonoBehaviour, IGoap
         if (other.transform.CompareTag("Smoke Bomb"))
         {
             player.Escape();
-            StartCoroutine(Stun());
+            if (!isRunning)
+            {
+                StartCoroutine(Stun());
+            }
         }
     }
 
     private IEnumerator Stun()
     {
-        var originalDestination = agent.destination;
+        isRunning = true;
+        
+        var originalSpeed = agent.speed;
 
-        agent.SetDestination(agent.transform.position);
+        agent.speed = 0;
 
         yield return new WaitForSeconds(stunTime);
 
-        agent.SetDestination(originalDestination);
+        agent.speed = originalSpeed;
+
+        isRunning = false;
     }
 }

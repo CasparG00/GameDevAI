@@ -9,8 +9,7 @@ public class Ally : MonoBehaviour, IGoap
 
     private Transform player;
     [SerializeField] private Transform viewTransform;
-    [SerializeField] private float followDistance = 5f;
-    
+
     private void Start()
     {
         if (GetComponent<Inventory>() == null)

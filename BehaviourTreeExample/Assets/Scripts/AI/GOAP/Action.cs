@@ -5,9 +5,10 @@ using UnityEngine.AI;
 public abstract class Action : MonoBehaviour
 {
     public string actionContext = "Abstract Action";
-    public float cost = 1f;
     [HideInInspector] public GameObject target;
+    public float cost = 1f;
     protected bool inRange;
+    protected bool isCompleted;
 
     public Dictionary<string, object> preconditions { get; }
     public Dictionary<string, object> effects { get; }
@@ -48,7 +49,7 @@ public abstract class Action : MonoBehaviour
         }
     }
     
-    public abstract bool IsAchievable(NavMeshAgent _agent);
+    public abstract bool IsAchievable(GameObject _agent);
 
     public void DoReset()
     {
@@ -57,8 +58,12 @@ public abstract class Action : MonoBehaviour
         Reset();
     }
     
-    public abstract bool PerformAction(NavMeshAgent _agent);
-    public abstract bool IsCompleted();
+    public abstract bool PerformAction(GameObject _agent);
+
+    public bool IsCompleted()
+    {
+        return isCompleted;
+    }
     public abstract bool RequiresInRange();
 
     public virtual bool IsInRange()

@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class Patrol : Action
 {
     private Player player;
-    private bool playerFound;
 
     private List<Vector3> wayPoints = new List<Vector3>();
     private int visited;
@@ -17,7 +16,7 @@ public class Patrol : Action
         AddEffect("playerFound", true);
     }
     
-    public override bool IsAchievable(NavMeshAgent _agent)
+    public override bool IsAchievable(GameObject _agent)
     {
         player = Player.instance;
 
@@ -32,19 +31,21 @@ public class Patrol : Action
         return player != null;
     }
 
-    public override bool PerformAction(NavMeshAgent _agent)
+    public override bool PerformAction(GameObject _agent)
     {
-        var tf = _agent.transform;
-        var direction = player.transform.position - tf.position;
-        var angle = Vector3.Angle(tf.forward, direction);
+        var agent = _agent.GetComponent<NavMeshAgent>();
+        var view = _agent.GetComponentInChildren<ViewTransform>().transform;
+        
+        var direction = player.transform.position - view.position;
+        var angle = Vector3.Angle(view.forward, direction);
         if (angle < 30)
         {
-            if (Physics.Raycast(tf.position, direction, out var hit, 5))
+            if (Physics.Raycast(view.position, direction, out var hit, 5))
             {
                 var damageable = hit.transform.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    playerFound = true;
+                    isCompleted = true;
                     player.GetAttacked();
                 }
             }
@@ -52,8 +53,8 @@ public class Patrol : Action
         
         if (visited < wayPoints.Count)
         {
-            _agent.SetDestination(wayPoints[visited]);
-            var distance = Vector3.Distance(_agent.transform.position, _agent.destination);
+            agent.SetDestination(wayPoints[visited]);
+            var distance = Vector3.Distance(_agent.transform.position, agent.destination);
             if (distance < 1)
             {
                 visited++;
@@ -67,11 +68,6 @@ public class Patrol : Action
         return true;
     }
 
-    public override bool IsCompleted()
-    {
-        return playerFound;
-    }
-
     public override bool RequiresInRange()
     {
         return false;
@@ -79,7 +75,7 @@ public class Patrol : Action
 
     public override void Reset()
     {
-        playerFound = false;
+        isCompleted = false;
         visited = 0;
         wayPoints.Clear();
     }

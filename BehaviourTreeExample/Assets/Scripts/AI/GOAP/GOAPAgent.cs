@@ -101,7 +101,7 @@ public sealed class GOAPAgent : MonoBehaviour
 
                     if (inRange)
                     {
-                        var success = action.PerformAction(agent);
+                        var success = action.PerformAction(gameObject);
 
                         if (!success)
                         {

@@ -3,7 +3,6 @@ using UnityEngine.AI;
 
 public class PickupWeapon : Action
 {
-    private bool pickedUp;
     private WeaponComponent targetStick;
 
     public PickupWeapon()
@@ -13,7 +12,7 @@ public class PickupWeapon : Action
         AddEffect("hasWeapon", true);
     }
 
-    public override bool IsAchievable(NavMeshAgent _agent)
+    public override bool IsAchievable(GameObject _agent)
     {
         var items = FindObjectsOfType<WeaponComponent>();
         WeaponComponent closest = null;
@@ -40,19 +39,14 @@ public class PickupWeapon : Action
         return closest != null;
     }
 
-    public override bool PerformAction(NavMeshAgent _agent)
+    public override bool PerformAction(GameObject _agent)
     {
         var inventory = _agent.GetComponent<Inventory>();
         inventory.Add("Weapon", 1);
         
-        pickedUp = true;
+        isCompleted = true;
         
         return true;
-    }
-
-    public override bool IsCompleted()
-    {
-        return pickedUp;
     }
 
     public override bool RequiresInRange()
@@ -67,6 +61,6 @@ public class PickupWeapon : Action
 
     public override void Reset()
     {
-        pickedUp = false;
+        isCompleted = false;
     }
 }

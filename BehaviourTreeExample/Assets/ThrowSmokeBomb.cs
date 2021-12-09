@@ -6,7 +6,6 @@ public class ThrowSmokeBomb : Action
 {
     [SerializeField] private GameObject smokeBomb;
     [SerializeField] private float throwSpeed = 1f;
-    private bool thrownSmokeBomb;
 
     private bool isRunning;
 
@@ -17,50 +16,48 @@ public class ThrowSmokeBomb : Action
         AddEffect("protectPlayer", true);
     }
 
-    public override bool IsAchievable(NavMeshAgent _agent)
+    public override bool IsAchievable(GameObject _agent)
     {
         target = FindObjectOfType<Guard>().gameObject;
         return target != null;
     }
 
-    public override bool IsCompleted()
-    {
-        return thrownSmokeBomb;
-    }
-
-    public override bool PerformAction(NavMeshAgent _agent)
+    public override bool PerformAction(GameObject _agent)
     {
         if (!isRunning)
         {
-            StartCoroutine(Throw(_agent));
+            StartCoroutine(Throw());
         }
 
         return true;
     }
 
-    private IEnumerator Throw(NavMeshAgent _agent)
+    private IEnumerator Throw()
     {
         isRunning = true;
-        var bomb = Instantiate(smokeBomb, _agent.transform.position, Quaternion.identity);
+
+        var view = GetComponentInChildren<ViewTransform>().transform;
+        
+        var bomb = Instantiate(smokeBomb, view.position, Quaternion.identity);
         var rb = bomb.GetComponent<Rigidbody>();
 
-        var force = CalculateVelocity(target.transform.position + target.GetComponent<NavMeshAgent>().velocity, _agent.transform.position, throwSpeed);
+        var force = CalculateVelocity(target.transform.position + target.GetComponent<NavMeshAgent>().velocity, view.position, throwSpeed);
         rb.AddForce(force, ForceMode.Impulse);
 
         yield return new WaitForSeconds(throwSpeed);
 
-        thrownSmokeBomb = true;
+        isCompleted = true;
         isRunning = false;
     }
 
     private Vector3 CalculateVelocity(Vector3 _target, Vector3 _origin, float _time)
     {
-        Vector3 distance = _target - _origin;
-        Vector3 distanceXZ = distance;
+        var distance = _target - _origin;
+        var distanceXZ = distance;
         distanceXZ.y = 0;
 
         var sy = distance.y;
-        float sxz = distanceXZ.magnitude;
+        var sxz = distanceXZ.magnitude;
 
         var vxz = sxz / _time;
         var vy = sy / _time + 0.5f * Mathf.Abs(Physics.gravity.y) * _time;
@@ -79,6 +76,6 @@ public class ThrowSmokeBomb : Action
 
     public override void Reset()
     {
-        thrownSmokeBomb = false;
+        isCompleted = false;
     }
 }

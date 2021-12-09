@@ -449,8 +449,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionContext: Attacking Player
-  cost: 1
   target: {fileID: 0}
+  cost: 1
   damage: 10
   attackLayer:
     serializedVersion: 2
@@ -535,6 +535,7 @@ MonoBehaviour:
   inventory: {fileID: 0}
   viewTransform: {fileID: 925384070}
   maxChaseRange: 5
+  stunTime: 2
 --- !u!114 &539429228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,8 +549,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionContext: Patrolling
-  cost: 1
   target: {fileID: 0}
+  cost: 1
 --- !u!114 &539429229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,8 +564,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionContext: Picking Up Weapon
-  cost: 1
   target: {fileID: 0}
+  cost: 1
 --- !u!1001 &593971748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -945,6 +946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 925384070}
+  - component: {fileID: 925384071}
   m_Layer: 0
   m_Name: ViewTransform
   m_TagString: Untagged
@@ -966,6 +968,18 @@ Transform:
   m_Father: {fileID: 539429224}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &925384071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925384069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39700d1c66d1cb34c9707fde9faaee37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,6 +1156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1240778071}
+  - component: {fileID: 1240778072}
   m_Layer: 0
   m_Name: ViewTransform
   m_TagString: Untagged
@@ -1157,12 +1172,24 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1240778070}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.636, z: 0}
+  m_LocalPosition: {x: 0, y: 1.636, z: 0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1840160679}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1240778072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240778070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39700d1c66d1cb34c9707fde9faaee37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1267729044
 GameObject:
   m_ObjectHideFlags: 0
@@ -2154,9 +2181,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionContext: Following Player
-  cost: 1
   target: {fileID: 0}
-  playerFollowDistance: 5
+  cost: 1
 --- !u!114 &1840160683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2183,7 +2209,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
   viewTransform: {fileID: 0}
-  followDistance: 5
 --- !u!114 &1840160685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2197,8 +2222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionContext: Find Cover
-  cost: 1
   target: {fileID: 0}
+  cost: 1
   coverSamplePointCount: 6
 --- !u!114 &1840160686
 MonoBehaviour:
@@ -2213,8 +2238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionContext: Throwing Smoke Bomb
-  cost: 1
   target: {fileID: 0}
+  cost: 1
   smokeBomb: {fileID: 1440965411006433327, guid: 8915c50a6c5ec104db9a603e756b28fa,
     type: 3}
   throwSpeed: 1

@@ -132,10 +132,8 @@ public sealed class GOAPAgent : MonoBehaviour
         PerformAction,
     }
 
-    private void OnDrawGizmos()
+    private void OnGUI()
     {
-        Gizmos.color = Color.yellow;
-
         if (agent != null)
         {
             var text = currentActions.Count == 0 ? state.ToString() : currentActions.Peek().actionContext;

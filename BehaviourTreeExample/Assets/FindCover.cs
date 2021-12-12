@@ -93,10 +93,4 @@ public class FindCover : Action
 
         isRunning = false;
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(destination, 0.1f);
-    }
 }

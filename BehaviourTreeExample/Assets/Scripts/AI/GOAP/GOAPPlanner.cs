@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.AI;
 
 public class GOAPPlanner
@@ -113,19 +112,6 @@ public class GOAPPlanner
         return allMatch;
     }
 
-    private bool GoalAchieved(Dictionary<string, object> _goal, Dictionary<string, object> _state)
-    {
-        foreach (var g in _goal)
-        {
-            if (!_state.ContainsKey(g.Key))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private List<Action> ActionSubset(List<Action> _actions, Action _removing)
     {
         var subset = new List<Action>();
@@ -153,10 +139,10 @@ public class GOAPPlanner
 
 
     private class Node {
-        public Node parent;
-        public float cost;
-        public Dictionary<string,object> state;
-        public Action action;
+        public readonly Node parent;
+        public readonly float cost;
+        public readonly Dictionary<string,object> state;
+        public readonly Action action;
 
         public Node(Node _parent, float _cost, Dictionary<string,object> _state, Action _action) {
             this.parent = _parent;

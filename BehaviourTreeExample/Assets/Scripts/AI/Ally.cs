@@ -4,22 +4,11 @@ using UnityEngine.AI;
 
 public class Ally : MonoBehaviour, IGoap
 {
-    public Inventory inventory;
     private NavMeshAgent agent;
-
-    private Transform player;
-    [SerializeField] private Transform viewTransform;
 
     private void Start()
     {
-        if (GetComponent<Inventory>() == null)
-        {
-            inventory = gameObject.AddComponent<Inventory>();
-        }
-
         agent = GetComponent<NavMeshAgent>();
-
-        player = Player.instance.transform;
     }
 
     public Dictionary<string, object> GetWorldData()

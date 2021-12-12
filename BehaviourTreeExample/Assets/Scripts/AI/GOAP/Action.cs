@@ -24,7 +24,7 @@ public abstract class Action : MonoBehaviour
         preconditions.Add(_key, _value);
     }
     
-    public void RemovePrecondition(string _key)
+    protected void RemovePrecondition(string _key)
     {
         foreach (var precondition in preconditions) {
             if (precondition.Key.Equals(_key))
@@ -34,12 +34,12 @@ public abstract class Action : MonoBehaviour
         }
     }
     
-    public void AddEffect(string _key, object _value)
+    protected void AddEffect(string _key, object _value)
     {
         effects.Add(_key, _value);
     }
     
-    public void RemoveEffect(string _key)
+    protected void RemoveEffect(string _key)
     {
         foreach (var effect in effects) {
             if (effect.Key.Equals(_key))

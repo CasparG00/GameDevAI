@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public sealed class GOAPAgent : MonoBehaviour
 {
-    public GOAPPlanner planner;
+    private GOAPPlanner planner;
     
     private HashSet<Action> availableActions;
     private Queue<Action> currentActions;

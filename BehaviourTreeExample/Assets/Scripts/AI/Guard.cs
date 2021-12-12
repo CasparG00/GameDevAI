@@ -9,7 +9,6 @@ public class Guard : MonoBehaviour, IGoap
     private NavMeshAgent agent;
 
     private Player player;
-    [SerializeField] private Transform viewTransform;
     [SerializeField] private float maxChaseRange = 5;
     [SerializeField] private float stunTime = 2;
 

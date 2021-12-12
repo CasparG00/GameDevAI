@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class PickupWeapon : Action
 {
-    private WeaponComponent targetStick;
+    private WeaponComponent targetWeapon;
 
     public PickupWeapon()
     {
@@ -33,8 +33,8 @@ public class PickupWeapon : Action
             return false;
         }
 
-        targetStick = closest;
-        target = targetStick.gameObject;
+        targetWeapon = closest;
+        target = targetWeapon.gameObject;
         
         return closest != null;
     }
